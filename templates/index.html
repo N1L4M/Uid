@@ -1,35 +1,105 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Facebook Group Fetcher</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f7f7f7;
+            margin: 0;
+            padding: 20px;
+        }
+        h1 {
+            text-align: center;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        label {
+            font-weight: bold;
+        }
+        input[type="text"], input[type="password"] {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        .group-list {
+            margin-top: 20px;
+            list-style-type: none;
+            padding: 0;
+        }
+        .group-list li {
+            background-color: #f1f1f1;
+            padding: 10px;
+            margin-bottom: 5px;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+        .group-list li a {
+            color: #007bff;
+            text-decoration: none;
+        }
+        .group-list li a:hover {
+            text-decoration: underline;
+        }
+    </style>
 </head>
 <body>
-    <h1>Facebook Group UID Fetcher</h1>
 
-    <form action="/fetch" method="POST">
-        <label for="email">Facebook Email:</label>
-        <input type="email" id="email" name="email" required><br><br>
-        <label for="password">Facebook Password:</label>
-        <input type="password" id="password" name="password" required><br><br>
-        <button type="submit">Fetch Group Data</button>
-    </form>
+    <div class="container">
+        <h1>Facebook Group Fetcher</h1>
+        <form method="POST" action="/fetch">
+            <div class="form-group">
+                <label for="email">Facebook Email</label>
+                <input type="text" id="email" name="email" required>
+            </div>
+            <div class="form-group">
+                <label for="password">Facebook Password</label>
+                <input type="password" id="password" name="password" required>
+            </div>
+            <button type="submit">Fetch Groups</button>
+        </form>
 
-    {% if group_data %}
-    <h2>Fetched Group Data</h2>
-    <table border="1">
-        <tr>
-            <th>Group Name</th>
-            <th>Group UID (Thread ID)</th>
-        </tr>
-        {% for group in group_data %}
-        <tr>
-            <td>{{ group.group_name }}</td>
-            <td>{{ group.thread_id }}</td>
-        </tr>
-        {% endfor %}
-    </table>
-    {% endif %}
+        {% if group_data %}
+            <h2>Fetched Group Data</h2>
+            <ul class="group-list">
+                {% for group in group_data %}
+                    <li>
+                        <strong>Group Name:</strong> {{ group.group_name }} <br>
+                        <strong>Thread ID:</strong> {{ group.thread_id }}
+                    </li>
+                {% endfor %}
+            </ul>
+        {% elif group_data.error %}
+            <div style="color: red;">Error: {{ group_data.error }}</div>
+        {% endif %}
+    </div>
+
 </body>
-  </html>
+</html>
