@@ -4,12 +4,18 @@ from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 import time
+import chromedriver_autoinstaller  # Import the module to install ChromeDriver
 
 app = Flask(__name__)
 
 # Function to fetch Group UID and Name using Selenium
 def fetch_group_data(email, password):
+    # Automatically installs the correct version of ChromeDriver
+    chromedriver_autoinstaller.install()  # This installs ChromeDriver automatically
+
+    # Initialize the WebDriver
     driver = webdriver.Chrome()  # Make sure ChromeDriver is in your PATH
+    
     driver.get("https://www.facebook.com")
     
     # Login to Facebook
